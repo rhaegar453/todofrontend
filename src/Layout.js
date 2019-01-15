@@ -10,11 +10,13 @@ class Layout extends React.Component {
     return (
       <div>
         <Navigation />
+        <div style={{marginTop:"70px"}}>
         <Switch>
           <Route path="/" exact component={ToDo}/>
           <Route path="/login" exact component={SignIn}/>
           <Route path="/register" exact component={Register}/>
         </Switch>
+        </div>
       </div>
     );
   }

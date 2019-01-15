@@ -1,30 +1,75 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Logout} from '../Store/Actions/auth';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Logout } from "../Store/Actions/auth";
+import { Link } from "react-router-dom";
+import './Navigation.css';
+import {Button} from 'reactstrap';
 
-class Navigation extends React.Component{
-    constructor(props){
-        super(props);
-    }
+class Navigation extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-    render(){
-        return(
-            <div>Navigation Works</div>
-        );
-    }
+  render() {
+    const authButtons = this.props.isLoggedIn ? (
+      <button className="btn btn-primary" type="button" id="authbuttons">
+        Log Out
+      </button>
+    ) : (
+      <div>
+        {" "}
+        <Link to="/register">
+        <Button color="primary" outline>
+        Register
+        </Button>
+        </Link>
+        <Link to="/login">
+        <Button color="success" outline style={{marginLeft:"10px"}}>Login</Button>
+        </Link>
+      </div>
+    );
+
+    return (
+      <div>
+        <nav className="navbar navbar-dark navbar-expand-md fixed-top bg-dark">
+          <div className="container-fluid">
+            <Link className="navbar-brand" to="/">
+              <i className="icon ion-ios-football" />
+              &nbsp;GoalTracker
+            </Link>
+            <button
+              className="navbar-toggler"
+              data-toggle="collapse"
+              data-target="#navcol-1"
+            >
+              <span className="sr-only">Toggle navigation</span>
+              <span className="navbar-toggler-icon" />
+            </button>
+            <div
+              className="collapse navbar-collapse d-flex flex-row-reverse"
+              id="navcol-1"
+            />
+            {authButtons}
+          </div>
+        </nav>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps=(state)=>{
-    return{
-        isLoggedIn:state.auth.isLoggedIn
-    }
-}
+const mapStateToProps = state => {
+  return {
+    isLoggedIn: state.auth.isLoggedIn
+  };
+};
 
-const mapDispatchToProps=(dispatch)=>{
-    return{
-        logout:()=>dispatch(Logout())
-    }
-}
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(Logout())
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Navigation);
