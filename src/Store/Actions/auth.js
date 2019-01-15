@@ -1,60 +1,101 @@
-import * as actionTypes from "../ActionTypes/auth";
-import updateObject from "../utility/utility";
+import * as actions from "../ActionTypes/auth";
+import axios from "axios";
+/* #region CheckLogin */
 
-const initialState = {
-  isLoggedIn: false,
-  username: false,
-  loading: false,
-  error: false,
-  errorMessage: false,
-  success: false,
-  token: null
+const checkLoginStart = () => {
+  return {
+    type: actions.check_login_start
+  };
 };
 
-const authReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case actionTypes.check_login_start:
-      return updateObject(state, { loading: true });
-    case actionTypes.check_login_fail:
-      return updateObject(state, { loading: false });
-    case actionTypes.check_login_success:
-      return updateObject(state, {
-        loading: false,
-        isLoggedIn: true,
-        token: action.token
-      });
-    case actionTypes.login_start:
-      return updateObject(state, { loading: true, isLoggedIn: false });
-    case actionTypes.login_success:
-      return updateObject(state, {
-        loading: false,
-        isLoggedIn: true,
-        success: true,
-        username: action.payload
-      });
-    case actionTypes.login_fail:
-      return updateObject(state,{
-        loading:false,
-        error:true,
-        errorMessage:action.payload
-      });
-    case actionTypes.register_start:
-      return updateObject(state, { loading: true });
-    case actionTypes.register_success:
-      return updateObject(state, { loading: false, isLoggedIn: false });
-    case actionTypes.register_fail:
-      return updateObject(state, {
-        loading: false,
-        error: true,
-        errorMessage: action.payload
-      });
-    case actionTypes.logout:
-      return updateObject(state, {
-        loading: false,
-        username: false,
-        token: null
-      });
-    default:
-      return state;
-  }
+const checkLoginSuccess = token => {
+  return {
+    type: actions.check_login_success,
+    token: token
+  };
 };
+
+const checkLoginFail = err => {
+  return {
+    type: actions.check_login_fail,
+    payload: "AutoLogin Failed"
+  };
+};
+
+export const checkLogin = token => {
+  return dispatch => {
+    dispatch(checkLoginStart());
+    console.log("Make a call to the server to fetch the details");
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: token
+    };
+    axios
+      .post(process.env.GET_USER_DETAILS)
+      .then(data => {
+        dispatch(checkLoginSuccess());
+      })
+      .catch(err => {
+        dispatch(checkLoginFail());
+      });
+  };
+};
+/* #endregion */
+
+/* #region Login */
+const loginStart = () => {
+  return {
+    type: actions.login_start
+  };
+};
+const loginFail = err => {
+  return {
+    type: actions.login_fail,
+    payload: err
+  };
+};
+
+const loginSuccess = token => {
+  return {
+    type: actions.login_success,
+    payload: token.token
+  };
+};
+
+export const login = (email, password) => {
+  return dispatch => {
+    dispatch(loginStart());
+    axios
+      .post(process.env.LOGIN_URL)
+      .then(token => {
+        dispatch(loginSuccess(token));
+      })
+      .catch(err => {
+        dispatch(loginFail(err));
+      });
+  };
+};
+/* #endregion */
+
+
+const registerSuccess=(data)=>{
+    return{
+        type:actions.register_success
+    }
+}
+
+export const register=(email, password, username)=>{
+    return dispatch=>{
+        dispatch(registerStart());
+        axios.post(process.env.REGISTER_URL)
+        .then(data=>{
+            if(data.success){
+                dispatch(registerSuccess('Successfully Registered'));
+            }
+            else dispatch(registerFail());
+        })
+        .catch(err=>{
+            dispatch(registerFail(err.message));
+        });
+    }
+}
