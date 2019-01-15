@@ -13,6 +13,7 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
+    //Check Login
     case actionTypes.check_login_start:
       return updateObject(state, { loading: true });
     case actionTypes.check_login_fail:
@@ -23,6 +24,7 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: true,
         token: action.token
       });
+      //Login Start
     case actionTypes.login_start:
       return updateObject(state, { loading: true, isLoggedIn: false });
     case actionTypes.login_success:
@@ -38,6 +40,7 @@ const authReducer = (state = initialState, action) => {
         error:true,
         errorMessage:action.payload
       });
+      //Register Start
     case actionTypes.register_start:
       return updateObject(state, { loading: true });
     case actionTypes.register_success:
@@ -48,11 +51,13 @@ const authReducer = (state = initialState, action) => {
         error: true,
         errorMessage: action.payload
       });
+
     case actionTypes.logout:
       return updateObject(state, {
         loading: false,
         username: false,
-        token: null
+        token: null,
+        isLoggedIn:false
       });
     default:
       return state;

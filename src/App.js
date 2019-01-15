@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Switch, Route} from 'react-router-dom';
-
+import Layout from './Layout';
 
 export default class App extends React.Component{
   constructor(props){
@@ -11,12 +10,7 @@ export default class App extends React.Component{
   render(){
     return(
       <div>
-        <Navigation/>
-        <Switch>
-          <Route exact path="/" component={toDo}></Route>
-          <Route path="/login" component={Login}></Route>
-          <Route exact path="/register" component={Register}></Route>
-        </Switch>
+        <Layout/>
       </div>
     );
   }

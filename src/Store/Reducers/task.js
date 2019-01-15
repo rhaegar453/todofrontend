@@ -46,6 +46,8 @@ const taskReducer=(state=initialState, action)=>{
                 ...state,
                 loading:false //Yet to be implemented
             }
+        default:
+            return state;
     }
 }
 

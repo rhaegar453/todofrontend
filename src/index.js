@@ -5,9 +5,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
 import {Provider} from 'react-redux';
-import authReducer from './Store/reducers/authReducers';
-import uiReducer from './Store/reducers/uiReducers';
-import taskReducer from './Store/reducers/taskReducers';
+import authReducer from '../src/Store/Reducers/auth';
+import uiReducer from '../src/Store/Reducers/ui';
+import taskReducer from '../src/Store/Reducers/task';
 import {BrowserRouter} from 'react-router-dom';
 
 

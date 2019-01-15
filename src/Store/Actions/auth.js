@@ -111,3 +111,11 @@ export const register = (email, password, username) => {
   };
 };
 /* #endregion */
+
+
+export const Logout=()=>{
+  return{
+    type:actions.logout
+  }
+}
+
