@@ -77,25 +77,37 @@ export const login = (email, password) => {
 };
 /* #endregion */
 
+/* #region Register Region */
+const registerSuccess = data => {
+  return {
+    type: actions.register_success
+  };
+};
 
-const registerSuccess=(data)=>{
-    return{
-        type:actions.register_success
-    }
-}
+const registerFail = () => {
+  return {
+    type: actions.register_fail
+  };
+};
 
-export const register=(email, password, username)=>{
-    return dispatch=>{
-        dispatch(registerStart());
-        axios.post(process.env.REGISTER_URL)
-        .then(data=>{
-            if(data.success){
-                dispatch(registerSuccess('Successfully Registered'));
-            }
-            else dispatch(registerFail());
-        })
-        .catch(err=>{
-            dispatch(registerFail(err.message));
-        });
-    }
-}
+const registerStart = () => {
+  return {
+    type: actions.register_start
+  };
+};
+export const register = (email, password, username) => {
+  return dispatch => {
+    dispatch(registerStart());
+    axios
+      .post(process.env.REGISTER_URL)
+      .then(data => {
+        if (data.success) {
+          dispatch(registerSuccess("Successfully Registered"));
+        } else dispatch(registerFail());
+      })
+      .catch(err => {
+        dispatch(registerFail(err.message));
+      });
+  };
+};
+/* #endregion */

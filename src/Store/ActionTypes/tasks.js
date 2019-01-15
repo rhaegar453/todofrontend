@@ -8,7 +8,7 @@ export const tasks_getall_success="TASK_GET_SUCCESS";
 
 
 export const tasks_update_start="TASK_UPDATE_START";
-export const tasks_update_start="TASK_UPDATE_SUCCESS";
+export const tasks_update_success="TASK_UPDATE_SUCCESS";
 export const tasks_update_fail="TASK_UPDATE_FAIL";
 
 export const task_delete_start="TASK_DELETE_START";

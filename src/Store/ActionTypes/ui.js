@@ -1,1 +1,1 @@
-export const model_open='MODAL_OPEN';
+export const MODAL_TOGGLE='MODAL_TOGGLE';
