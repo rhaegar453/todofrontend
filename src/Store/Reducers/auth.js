@@ -6,9 +6,13 @@ const initialState = {
   username: false,
   loading: false,
   error: false,
-  errorMessage: false,
-  success: false,
-  token: null
+  registerError:false,
+  errorMessage: '',
+  loginErrMessage:'',
+  regSuccess: false,
+  token: null,
+  data:null,
+  redirect:false
 };
 
 const authReducer = (state = initialState, action) => {
@@ -27,7 +31,7 @@ const authReducer = (state = initialState, action) => {
       });
     //Login Start
     case actionTypes.login_start:
-      return updateObject(state, { loading: true, isLoggedIn: false });
+      return updateObject(state, { loading: true, isLoggedIn: false});
 
     case actionTypes.login_success:
       return {
@@ -41,7 +45,7 @@ const authReducer = (state = initialState, action) => {
       return updateObject(state, {
         loading: false,
         error: true,
-        errorMessage: action.payload
+        loginErrMessage: action.payload
       });
     //Register Start
     case actionTypes.register_start:
@@ -50,13 +54,15 @@ const authReducer = (state = initialState, action) => {
       return updateObject(state, {
         loading: false,
         isLoggedIn: false,
-        success: true
+        regSuccess: true,
+        redirect:true
       });
     case actionTypes.register_fail:
       return updateObject(state, {
         loading: false,
-        error: true,
-        errorMessage: action.payload
+        registerError: true,
+        redirect:false,
+        errorMessage:action.payload
       });
 
     case actionTypes.logout:

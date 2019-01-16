@@ -18,12 +18,17 @@ class SignIn extends React.Component {
     e.preventDefault();
     console.log("Submit Successful");
     this.props.login(this.state.email, this.state.password);
-    this.props.history.push('/');
+    setTimeout(()=>{
+      if(this.props.loginSuccess){
+        this.props.history.push('/');
+      }
+    },1000);
 };
   
 
 
   render() {
+    let loginErr=this.props.error?<p>{this.props.errorMessage}</p>:null;
     const redirector=!this.props.isLoggedIn?<div className="login-clean">
     <form onSubmit={this.handleSubmit}>
       <h2 className="sr-only">Login Form</h2>
@@ -57,6 +62,7 @@ class SignIn extends React.Component {
         <button className="btn btn-primary btn-block" type="submit">
           Log In
         </button>
+        {loginErr}
       </div>
     </form>
   </div>:<Redirect to="/"/>
@@ -74,7 +80,7 @@ const mapStateToProps = state => {
     isLoggedIn: state.auth.isLoggedIn,
     loginSuccess: state.auth.success,
     error: state.auth.error,
-    errorMessage: state.auth.errorMessage
+    errorMessage: state.auth.loginErrMessage
   };
 };
 

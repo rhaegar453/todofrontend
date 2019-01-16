@@ -59,7 +59,7 @@ const loginStart = () => {
 const loginFail = err => {
   return {
     type: actions.login_fail,
-    payload: err
+    payload: "Login Failed"
   };
 };
 
@@ -87,46 +87,57 @@ export const login = (email, password) => {
         dispatch(listTasks(token.data.token));
       })
       .catch(err => {
-        dispatch(loginFail(err));
+        dispatch(loginFail(err.response));
       });
   };
 };
 /* #endregion */
 
 /* #region Register Region */
-const registerSuccess = data => {
-  return {
-    type: actions.register_success
-  };
+
+const registrationStart=()=>{
+  return{
+    type:actions.register_start
+  }
 };
 
-const registerFail = () => {
-  return {
-    type: actions.register_fail
-  };
+const registerSuccess=(successMessage)=>{
+  return{
+    type:actions.register_success,
+    payload:successMessage
+  }
 };
 
-const registerStart = () => {
-  return {
-    type: actions.register_start
-  };
+const registerFail=(failMessage)=>{
+  return{
+    type:actions.register_fail,
+    payload:failMessage
+  }
 };
-export const register = (email, password, username) => {
-  return dispatch => {
-    dispatch(registerStart());
-    axios
-      .post(devProcess.REACT_APP_REGISTER_URL)
-      .then(data => {
-        if (data.success) {
-          dispatch(registerSuccess("Successfully Registered"));
-        } else dispatch(registerFail());
+export const register=(email, password, username)=>{
+    return dispatch=>{
+      dispatch(registrationStart());
+      let headers={
+        "Content-type":"application/json"
+      }
+      let data={
+        email:email,
+        password:password,
+        username:username
+      }
+
+      axios
+      .post(devProcess.REACT_APP_REGISTER_URL, data, {headers:headers})
+      .then(resp=>{
+        console.log(resp);
+        dispatch(registerSuccess(resp.data.data));
       })
-      .catch(err => {
-        dispatch(registerFail(err.message));
+      .catch(err=>{
+        console.log(err.response.data.message);
+        dispatch(registerFail(err.response.data.message));
       });
-  };
-};
-/* #endregion */
+    }
+}
 
 
 export const Logout=()=>{

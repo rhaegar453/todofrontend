@@ -75,11 +75,14 @@ class ToDo extends React.Component {
             </div>
             <div className="form-group">
               <label>Description</label>
-              <input
+              <textarea className="form-control rounded-10" onChange={e=>this.setState({description:e.target.value})}></textarea>
+
+              {/* <input
                 className="form-control"
+                type="textarea"
                 autoComplete="off"
                 onChange={e => this.setState({ description: e.target.value })}
-              />
+              /> */}
             </div>
             <div className="form-group">
               <label>End Date</label>
@@ -131,6 +134,7 @@ class ToDo extends React.Component {
                     endDate={task.endDate}
                     key={task._id}
                     id={task._id}
+                    createdOn={task.createdDate}
                   />
                 ))}
               </div>
