@@ -18,7 +18,7 @@ class Navigation extends React.Component {
         this.props.nullify();
         setTimeout(()=>{
           this.props.history.push('/login');
-        },1000);
+        },500);
       },1000)
   }
 

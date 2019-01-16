@@ -83,6 +83,7 @@ export const login = (email, password) => {
       .then(token => {
         dispatch(loginSuccess(token));
         localStorage.setItem('jwt', token.data.token);
+        localStorage.setItem('loggedIn', true);
         dispatch(listTasks(token.data.token));
       })
       .catch(err => {

@@ -1,21 +1,31 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import { checkLoginFail, checkLogin } from "../Store/Actions/auth";
 import { listTasks, createTask } from "../Store/Actions/task";
 import Task from "./Task";
 import { modalToggle } from "../Store/Actions/ui";
 import Modal from "../Assets/Modal";
-import {ModalFooter, Input, Button} from 'reactstrap';
+import { ModalFooter, Input, Button } from "reactstrap";
+
+const Preview=(props)=>{
+  return(
+    <div>
+      <h1>Task Management Made Easy</h1>
+      <Link to="/login">Click Here to Login</Link>
+    </div>
+  );
+}
 
 class ToDo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tokenAvailable: false,
-      title:'',
-      description:'',
-      endDate:''
+      title: "",
+      description: "",
+      endDate: "",
+      isLoggedIn: false
     };
   }
   componentDidMount() {
@@ -33,51 +43,72 @@ class ToDo extends React.Component {
     }
   }
 
-  createTask = (e) => {
-      e.preventDefault();
+  createTask = e => {
+    e.preventDefault();
     this.props.modalToggle();
   };
-  toggle=()=>[
-      this.props.modalToggle()
-  ]
+  toggle = () => [this.props.modalToggle()];
 
-  submitHandler=(e)=>{
-      e.preventDefault();
-      let token=localStorage.getItem('jwt');
-      this.props.createTask(token,this.state.title, this.state.description, this.state.endDate);
-  }
+  submitHandler = e => {
+    e.preventDefault();
+    let token = localStorage.getItem("jwt");
+    this.props.createTask(
+      token,
+      this.state.title,
+      this.state.description,
+      this.state.endDate
+    );
+  };
 
   render() {
-      let modal=this.props.modalState?<div>
-          <Modal modalTitle="New Task">
-            <form onSubmit={this.submitHandler}>
-                <div className="form-group">
-                    <label>Title</label>
-                    <input className="form-control" autoComplete="off" onChange={e=>this.setState({title:e.target.value})}></input>
-                </div>
-                <div className="form-group">
-                    <label>Description</label>
-                    <input className="form-control" autoComplete="off" onChange={e=>this.setState({description:e.target.value})}></input>
-                </div>
-                <div className="form-group">
-                    <label>End Date</label>
-                    <Input type="date" onChange={e=>this.setState({endDate:e.target.value})}/>
-                </div>
-                <ModalFooter>
-                    <Button color="success" size="lg" type="submit">Create Task</Button>
-                    <button onClick={this.toggle} className="btn btn-danger btn-lg">Cancel</button>
-                </ModalFooter>
-            </form>
-          </Modal>
-      </div>:null;
+    let modal = this.props.modalState ? (
+      <div>
+        <Modal modalTitle="New Task">
+          <form onSubmit={this.submitHandler}>
+            <div className="form-group">
+              <label>Title</label>
+              <input
+                className="form-control"
+                autoComplete="off"
+                onChange={e => this.setState({ title: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label>Description</label>
+              <input
+                className="form-control"
+                autoComplete="off"
+                onChange={e => this.setState({ description: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <label>End Date</label>
+              <Input
+                type="date"
+                onChange={e => this.setState({ endDate: e.target.value })}
+              />
+            </div>
+            <ModalFooter>
+              <Button color="success" size="lg" type="submit">
+                Create Task
+              </Button>
+              <button onClick={this.toggle} className="btn btn-danger btn-lg">
+                Cancel
+              </button>
+            </ModalFooter>
+          </form>
+        </Modal>
+      </div>
+    ) : null;
     return (
       <div>
         <div>
           <div>
-              {modal}
+            {modal}
             <div className="container" id="startContainer">
               <div className="row">
-                <div className="col-10">
+
+                {this.props.isLoggedIn&&<div className="col-10">
                   <h1 className="d-flex flex-row justify-content-between">
                     My Tasks
                     <button
@@ -89,7 +120,8 @@ class ToDo extends React.Component {
                     </button>
                     <h2>Days Left</h2>
                   </h1>
-                </div>
+                </div>}
+                {!this.props.isLoggedIn&&<Preview/>}
               </div>
               <div className="col-md-10">
                 {this.props.tasks.map(task => (
@@ -115,7 +147,7 @@ const mapStateToProps = state => {
     isLoggedIn: state.auth.isLoggedIn,
     tasks: state.task.tasks,
     username: state.auth.username,
-    modalState:state.ui.modalOpen
+    modalState: state.ui.modalOpen
   };
 };
 
@@ -125,11 +157,12 @@ const mapDispatchToProps = dispatch => {
     getDetails: token => dispatch(checkLogin(token)),
     listTasks: token => dispatch(listTasks(token)),
     modalToggle: () => dispatch(modalToggle()),
-    createTask:(token,title, description, endDate)=>dispatch(createTask(token,title, description, endDate))
+    createTask: (token, title, description, endDate) =>
+      dispatch(createTask(token, title, description, endDate))
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ToDo);
+)(withRouter(ToDo));

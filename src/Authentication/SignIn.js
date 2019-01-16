@@ -14,9 +14,6 @@ class SignIn extends React.Component {
     };
   }
 
-  componentDidMount() {
-    console.log(process.env);
-  }
   handleSubmit = e => {
     e.preventDefault();
     console.log("Submit Successful");
