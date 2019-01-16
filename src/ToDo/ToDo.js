@@ -47,6 +47,7 @@ class ToDo extends React.Component {
       this.props.createTask(token,this.state.title, this.state.description, this.state.endDate);
   }
 
+  
   render() {
       let modal=this.props.modalState?<div>
           <Modal modalTitle="New Task">
@@ -61,7 +62,7 @@ class ToDo extends React.Component {
                 </div>
                 <div className="form-group">
                     <label>End Date</label>
-                    <Input type="date" onChange={e=>this.setState({endDate:e.target.value})}/>
+                    <Input type="date" min={Date.now()} onChange={e=>this.setState({endDate:e.target.value})}/>
                 </div>
                 <ModalFooter>
                     <Button color="success" size="lg" type="submit">Create Task</Button>
@@ -94,6 +95,7 @@ class ToDo extends React.Component {
               <div className="col-md-10">
                 {this.props.tasks.map(task => (
                   <Task
+                  createdOn={task.createdDate}
                     title={task.title}
                     description={task.description}
                     endDate={task.endDate}

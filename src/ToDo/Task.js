@@ -3,6 +3,7 @@ import { Collapse, Button, CardHeader, CardBody, Card } from "reactstrap";
 import { taskDelete } from "../Store/Actions/task";
 import { connect } from "react-redux";
 import Modal from '../Assets/Modal';
+import Moment from 'react-moment';
 
 //Title
 //Description
@@ -25,8 +26,13 @@ class Task extends React.Component {
     let token = localStorage.getItem("jwt");
     this.props.deleteTask(id, token);
   };
+  componentDidMount(){
+      console.log(this.props);
+  }
   render() {
-    return (
+      const daysFrom =<Moment fromNow>{this.props.endDate}</Moment>
+        const createdOn=<Moment fromNow>{this.props.createdOn}</Moment>
+      return (
       <div>
         <Collapse isOpen={this.state.collapse}>
           <Card>
@@ -35,7 +41,8 @@ class Task extends React.Component {
             </CardHeader>
             <CardBody>
               <p>Description:{this.props.description}</p>
-              <p>Task ends {this.props.endDate}</p>
+              <p>Task ends :{daysFrom}</p>
+              <p>Task created :{createdOn}</p>
               <Button color="danger" onClick={this.deleteTaskHandler}>
                 Delete Task
               </Button>
