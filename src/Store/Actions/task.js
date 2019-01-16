@@ -2,7 +2,6 @@ import * as actions from "../ActionTypes/tasks";
 import axios from "axios";
 import * as devProcess from '../../devConfig';
 import {modalToggle} from './ui';
-import Moment from 'react-moment';
 
 /* #region Create  */
 
