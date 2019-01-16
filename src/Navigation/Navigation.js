@@ -1,7 +1,7 @@
 import React, { Component, ReactDOM } from "react";
 import { connect } from "react-redux";
 import { Logout } from "../Store/Actions/auth";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import './Navigation.css';
 import {Button} from 'reactstrap';
 import {nullifyTasks} from '../Store/Actions/task';
@@ -16,6 +16,9 @@ class Navigation extends React.Component {
         this.props.logout();
         localStorage.clear();
         this.props.nullify();
+        setTimeout(()=>{
+          this.props.history.push('/login');
+        },1000);
       },1000)
   }
 
@@ -82,4 +85,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Navigation);
+)(withRouter(Navigation));
