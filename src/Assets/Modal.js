@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { connect } from "react-redux";
-import { modalToggle } from "../Store/actions/uiActions";
+import { modalToggle } from "../Store/Actions/ui";
 
 class ModalC extends React.Component {
   constructor(props) {

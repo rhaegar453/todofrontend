@@ -2,6 +2,8 @@ import React from "react";
 import { Collapse, Button, CardHeader, CardBody, Card } from "reactstrap";
 import { taskDelete } from "../Store/Actions/task";
 import { connect } from "react-redux";
+import Modal from '../Assets/Modal';
+
 //Title
 //Description
 //ID
@@ -54,9 +56,14 @@ class Task extends React.Component {
   }
 }
 
+const mapStateToProps=(state)=>{
+    return{
+        modalOpen:state.ui.modalOpen
+    }
+}
 const mapDispatchToProps = dispatch => {
   return {
-    deleteTask: (id, token) => dispatch(taskDelete(id,token))
+    deleteTask: (id, token) => dispatch(taskDelete(id,token))  
   };
 };
 export default connect(null,mapDispatchToProps)(Task);

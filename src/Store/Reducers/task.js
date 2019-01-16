@@ -4,8 +4,7 @@ import utility from '../utility/utility';
 const initialState={
     error:false,
     loading:false,
-    tasks:[],
-    data:null
+    tasks:[]
 }
 
 const taskReducer=(state=initialState, action)=>{
@@ -26,8 +25,7 @@ const taskReducer=(state=initialState, action)=>{
             return{
                 ...state,
                 loading:false,
-                error:false,
-                tasks:{...state.tasks,...action.payload}
+                error:false
             }
         //Task Remove
         case actions.task_delete_start:

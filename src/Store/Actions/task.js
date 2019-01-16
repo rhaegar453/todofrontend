@@ -1,7 +1,7 @@
 import * as actions from "../ActionTypes/tasks";
 import axios from "axios";
 import * as devProcess from '../../devConfig';
-
+import {modalToggle} from './ui';
 
 /* #region Create  */
 
@@ -11,10 +11,9 @@ const createTaskStart = () => {
   };
 };
 
-const createTaskSuccess = data => {
+const createTaskSuccess = () => {
   return {
-    type: actions.task_create_success,
-    payload: data
+    type: actions.task_create_success
   };
 };
 
@@ -37,9 +36,11 @@ export const createTask = (token, title, description, endDate) => {
       endDate: endDate
     };
     axios
-      .post(devProcess.REACT_APP_TASK_CREATE)
+      .post(devProcess.REACT_APP_TASK_CREATE,data, {headers:headers})
       .then(data => {
         dispatch(createTaskSuccess(data));
+        dispatch(listTasks(token));
+        dispatch(modalToggle());
       })
       .catch(err => {
         dispatch(createTaskFail(err));
