@@ -25,45 +25,48 @@ class SignIn extends React.Component {
 };
   
 
+
   render() {
+    const redirector=!this.props.isLoggedIn?<div className="login-clean">
+    <form onSubmit={this.handleSubmit}>
+      <h2 className="sr-only">Login Form</h2>
+      <div className="illustration">
+        <h1>Login</h1>
+        <i className="icon ion-ios-football" />
+      </div>
+      <div className="form-group">
+        <input
+          autoComplete="off"
+          className="form-control"
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={e => this.setState({ email: e.target.value })}
+          value={this.state.email}
+        />
+      </div>
+      <div className="form-group">
+        <input
+          onChange={e => this.setState({ password: e.target.value })}
+          autoComplete="off"
+          className="form-control"
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={this.state.password}
+        />
+      </div>
+      <div className="form-group">
+        <button className="btn btn-primary btn-block" type="submit">
+          Log In
+        </button>
+      </div>
+    </form>
+  </div>:<Redirect to="/"/>
+
     return (
       <div>
-        <div className="login-clean">
-          <form onSubmit={this.handleSubmit}>
-            <h2 className="sr-only">Login Form</h2>
-            <div className="illustration">
-              <h1>Login</h1>
-              <i className="icon ion-ios-football" />
-            </div>
-            <div className="form-group">
-              <input
-                autoComplete="off"
-                className="form-control"
-                type="email"
-                name="email"
-                placeholder="Email"
-                onChange={e => this.setState({ email: e.target.value })}
-                value={this.state.email}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                onChange={e => this.setState({ password: e.target.value })}
-                autoComplete="off"
-                className="form-control"
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={this.state.password}
-              />
-            </div>
-            <div className="form-group">
-              <button className="btn btn-primary btn-block" type="submit">
-                Log In
-              </button>
-            </div>
-          </form>
-        </div>
+        {redirector}
       </div>
     );
   }
