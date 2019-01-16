@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, ReactDOM } from "react";
 import { connect } from "react-redux";
 import { Logout } from "../Store/Actions/auth";
 import { Link } from "react-router-dom";
 import './Navigation.css';
 import {Button} from 'reactstrap';
+import {nullifyTasks} from '../Store/Actions/task';
 
 class Navigation extends React.Component {
   constructor(props) {
@@ -12,7 +13,9 @@ class Navigation extends React.Component {
 
   logoutHandler=()=>{
       setTimeout(()=>{
-        this.props.logout()
+        this.props.logout();
+        localStorage.clear();
+        this.props.nullify();
       },1000)
   }
 
@@ -71,7 +74,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch(Logout())
+    logout: () => dispatch(Logout()),
+    nullify:()=>dispatch(nullifyTasks())
   };
 };
 

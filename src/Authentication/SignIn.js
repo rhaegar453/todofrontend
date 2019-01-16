@@ -2,7 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { login } from "../Store/Actions/auth";
-import { Redirect } from "react-router-dom";
+import { Redirect , withRouter} from "react-router-dom";
+import {listTasks} from '../Store/Actions/task';
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -20,14 +21,13 @@ class SignIn extends React.Component {
     e.preventDefault();
     console.log("Submit Successful");
     this.props.login(this.state.email, this.state.password);
+    this.props.history.push('/');
 };
   
 
   render() {
-      const redirect=this.props.loginSuccess?<Redirect to="/"/>:null;
     return (
       <div>
-          {redirect}
         <div className="login-clean">
           <form onSubmit={this.handleSubmit}>
             <h2 className="sr-only">Login Form</h2>
@@ -86,4 +86,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignIn);
+)(withRouter(SignIn));

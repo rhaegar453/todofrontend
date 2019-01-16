@@ -2,6 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link, Redirect} from 'react-router-dom';
 import {checkLoginFail, checkLogin} from '../Store/Actions/auth';
+import {listTasks} from '../Store/Actions/task';
+import Task from './Task';
 
 
 class ToDo extends React.Component{
@@ -11,7 +13,6 @@ class ToDo extends React.Component{
             tokenAvailable:false
         }
     }
-
     componentDidMount(){
         //Get the token from localstorage
         try{
@@ -20,9 +21,11 @@ class ToDo extends React.Component{
                 throw new Error('Token not found');
             }
             this.props.getDetails(token);
+            console.log('Requesting for the list of tasks');
+            this.props.listTasks(token);
         }
         catch(err){ 
-            this.props.notLoggedIn();
+            console.log('Not logged in')
         }
     }   
 
@@ -30,8 +33,9 @@ class ToDo extends React.Component{
     render(){
         return(
             <div>
-                To Do Works
-                <Link to="/login"><button className="btn btn-primary">To Do</button></Link>
+                {this.props.tasks.map(task=>(
+                    <p key={task._id}>{task.title}</p>
+                ))}
             </div>
         )
     }
@@ -41,7 +45,8 @@ class ToDo extends React.Component{
 
 const mapStateToProps=(state)=>{
     return{
-        isLoggedIn:state.auth.isLoggedIn
+        isLoggedIn:state.auth.isLoggedIn,
+        tasks:state.task.tasks
     }
 }
 
@@ -49,7 +54,8 @@ const mapStateToProps=(state)=>{
 const mapDispatchToProps=(dispatch)=>{
     return{
         notLoggedIn:()=>dispatch(checkLoginFail()),
-        getDetails:(token)=>dispatch(checkLogin(token))
+        getDetails:(token)=>dispatch(checkLogin(token)),
+        listTasks:(token)=>dispatch(listTasks(token))
     }
 }
 

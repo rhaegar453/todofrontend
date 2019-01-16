@@ -2,6 +2,8 @@ import * as actions from "../ActionTypes/tasks";
 import axios from "axios";
 import * as devProcess from '../../devConfig';
 
+
+
 /* #region Create  */
 
 const createTaskStart = () => {
@@ -82,7 +84,7 @@ export const taskDelete = (id, token) => {
       .delete(devProcess.REACT_APP_TASK_DELETE)
       .then(data => {
         console.log(data);
-        dispatch(taskDeleteSuccessful(data));
+        dispatch(taskDeleteSuccess(data));
       })
       .catch(err => {
         console.log(err);
@@ -115,7 +117,7 @@ const taskUpdateSuccess = data => {
   };
 };
 
-export const taskUpdate = (id, title, description, endDate) => {
+export const taskUpdate = (id, token, title, description, endDate) => {
   return dispatch => {
     dispatch(taskUpdateStart());
     let headers = {
@@ -152,7 +154,7 @@ const listTasksStarted = () => {
 const listTaskSuccess = data => {
   return {
     type: actions.tasks_getall_success,
-    payload: data
+    payload: data.data.data
   };
 };
 
@@ -170,7 +172,7 @@ export const listTasks = token => {
       authorization: token
     };
     axios
-      .get(devProcess.REACT_APP_TASK_LIST, headers)
+      .get(devProcess.REACT_APP_TASK_LIST, {headers:headers})
       .then(data => {
         dispatch(listTaskSuccess(data));
       })
@@ -180,3 +182,11 @@ export const listTasks = token => {
   };
 };
 /* #endregion */
+
+//Nullify tasks after logout
+
+export const nullifyTasks=()=>{
+    return{
+      type:actions.nullify_tasks
+    }
+}

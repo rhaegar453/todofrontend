@@ -1,6 +1,9 @@
 import * as actions from "../ActionTypes/auth";
 import axios from "axios";
 import * as devProcess from '../../devConfig'; 
+import {listTasks} from '../Actions/task';
+
+
 
 /* #region CheckLogin */
 
@@ -80,6 +83,7 @@ export const login = (email, password) => {
       .then(token => {
         dispatch(loginSuccess(token));
         localStorage.setItem('jwt', token.data.token);
+        dispatch(listTasks(token.data.token));
       })
       .catch(err => {
         dispatch(loginFail(err));

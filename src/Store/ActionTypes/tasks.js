@@ -14,3 +14,6 @@ export const tasks_update_fail="TASK_UPDATE_FAIL";
 export const task_delete_start="TASK_DELETE_START";
 export const task_delete_fail="TASK_DELETE_FAIL";
 export const task_delete_success="TASK_DELETE_SUCCESS";
+
+
+export const nullify_tasks="TASK_NULLIFY";

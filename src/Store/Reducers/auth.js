@@ -15,37 +15,43 @@ const authReducer = (state = initialState, action) => {
   switch (action.type) {
     //Check Login
     case actionTypes.check_login_start:
-      return updateObject(state, { loading: true, isLoggedIn:false});
+      return updateObject(state, { loading: true, isLoggedIn: false });
     case actionTypes.check_login_fail:
-      return updateObject(state, { loading: false, isLoggedIn:false});
+      return updateObject(state, { loading: false, isLoggedIn: false });
     case actionTypes.check_login_success:
       return updateObject(state, {
         loading: false,
         isLoggedIn: true,
         token: action.token,
-        username:action.data.data.username
+        username: action.data.data.username
       });
-      //Login Start
+    //Login Start
     case actionTypes.login_start:
       return updateObject(state, { loading: true, isLoggedIn: false });
+
     case actionTypes.login_success:
-      return updateObject(state, {
+      return {
+        ...state,
         loading: false,
         isLoggedIn: true,
         success: true,
         token: action.token
-      });
+      };
     case actionTypes.login_fail:
-      return updateObject(state,{
-        loading:false,
-        error:true,
-        errorMessage:action.payload
+      return updateObject(state, {
+        loading: false,
+        error: true,
+        errorMessage: action.payload
       });
-      //Register Start
+    //Register Start
     case actionTypes.register_start:
       return updateObject(state, { loading: true });
     case actionTypes.register_success:
-      return updateObject(state, { loading: false, isLoggedIn: false, success:true});
+      return updateObject(state, {
+        loading: false,
+        isLoggedIn: false,
+        success: true
+      });
     case actionTypes.register_fail:
       return updateObject(state, {
         loading: false,
@@ -58,12 +64,12 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         username: false,
         token: null,
-        isLoggedIn:false
+        isLoggedIn: false,
+        success:false
       });
     default:
       return state;
   }
 };
-
 
 export default authReducer;

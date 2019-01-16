@@ -4,7 +4,8 @@ import utility from '../utility/utility';
 const initialState={
     error:false,
     loading:false,
-    tasks:[]
+    tasks:[],
+    data:null
 }
 
 const taskReducer=(state=initialState, action)=>{
@@ -26,7 +27,7 @@ const taskReducer=(state=initialState, action)=>{
                 ...state,
                 loading:false,
                 error:false,
-                tasks:action.payload
+                tasks:{...state.tasks,...action.payload}
             }
         //Task Remove
         case actions.task_delete_start:
@@ -44,7 +45,30 @@ const taskReducer=(state=initialState, action)=>{
         case actions.task_delete_success:
             return{
                 ...state,
-                loading:false //Yet to be implemented
+                loading:false,
+                data:action.payload
+            }
+        //task Get All
+        case actions.tasks_getall_start:
+            return{
+                ...state,
+                loading:true
+            }
+        case actions.tasks_getall_fail:
+            return{
+                ...state,
+                error:true
+            }
+        case actions.tasks_getall_success:
+            return{
+                ...state,
+                tasks:action.payload,
+                loading:false
+            }
+        case actions.nullify_tasks:
+            return{
+                ...state,
+                tasks:[]
             }
         default:
             return state;
