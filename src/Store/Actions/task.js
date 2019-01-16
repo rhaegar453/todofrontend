@@ -3,7 +3,6 @@ import axios from "axios";
 import * as devProcess from '../../devConfig';
 
 
-
 /* #region Create  */
 
 const createTaskStart = () => {
@@ -78,13 +77,14 @@ export const taskDelete = (id, token) => {
     authorization: token,
     id: id
   };
+  console.log(headers);
   return dispatch => {
     dispatch(taskDeleteStarted());
     axios
-      .delete(devProcess.REACT_APP_TASK_DELETE)
+      .delete(devProcess.REACT_APP_TASK_DELETE, {headers:headers})
       .then(data => {
-        console.log(data);
         dispatch(taskDeleteSuccess(data));
+        dispatch(listTasks(token));
       })
       .catch(err => {
         console.log(err);

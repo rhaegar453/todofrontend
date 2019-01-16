@@ -1,31 +1,29 @@
 import React from "react";
 import { Collapse, Button, CardHeader, CardBody, Card } from "reactstrap";
-import {taskDelete} from '../Store/Actions/task';
-import {connect} from 'react-redux';
-//Title 
+import { taskDelete } from "../Store/Actions/task";
+import { connect } from "react-redux";
+//Title
 //Description
 //ID
 //EndDate
 class Task extends React.Component {
   constructor(props) {
+      super(props);
     this.state = {
-        collapse:false,
-
+      collapse: false
     };
   }
 
-  toggle=()=>{
-    this.setState({collapse:!this.state.collapse});
-}
+  toggle = () => {
+    this.setState({ collapse: !this.state.collapse });
+  };
 
-    deleteTaskHandler=()=>{
-        let id=this.props.id;
-        let token=localStorage.getItem('jwt');
-        this.props.taskDelete(id, token);        
-    }
+  deleteTaskHandler = () => {
+    let id = this.props.id;
+    let token = localStorage.getItem("jwt");
+    this.props.deleteTask(id, token);
+  };
   render() {
-
-
     return (
       <div>
         <Collapse isOpen={this.state.collapse}>
@@ -36,7 +34,7 @@ class Task extends React.Component {
             <CardBody>
               <p>Description:{this.props.description}</p>
               <p>Task ends {this.props.endDate}</p>
-              <Button color="primary" onClick={this.deleteTaskHandler}>
+              <Button color="danger" onClick={this.deleteTaskHandler}>
                 Delete Task
               </Button>
             </CardBody>
@@ -56,10 +54,9 @@ class Task extends React.Component {
   }
 }
 
-
-const mapDispatchToProps=(dispatch)=>{
-    return{
-        deleteTask:(id, token)=>dispatch(taskDelete(id, token))
-    }
-}
-export default  connect(mapDispatchToProps)(Task)
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteTask: (id, token) => dispatch(taskDelete(id,token))
+  };
+};
+export default connect(null,mapDispatchToProps)(Task);
