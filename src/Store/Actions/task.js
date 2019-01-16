@@ -1,5 +1,7 @@
 import * as actions from "../ActionTypes/tasks";
 import axios from "axios";
+import * as devProcess from '../../devConfig';
+
 /* #region Create  */
 
 const createTaskStart = () => {
@@ -34,7 +36,7 @@ export const createTask = (token, title, description, endDate) => {
       endDate: endDate
     };
     axios
-      .post(process.env.TASK_CREATE)
+      .post(devProcess.REACT_APP_TASK_CREATE)
       .then(data => {
         dispatch(createTaskSuccess(data));
       })
@@ -77,7 +79,7 @@ export const taskDelete = (id, token) => {
   return dispatch => {
     dispatch(taskDeleteStarted());
     axios
-      .delete(process.env.TASK_DELETE)
+      .delete(devProcess.REACT_APP_TASK_DELETE)
       .then(data => {
         console.log(data);
         dispatch(taskDeleteSuccessful(data));
@@ -127,7 +129,7 @@ export const taskUpdate = (id, title, description, endDate) => {
       endDate: endDate
     };
     axios
-      .put(process.env.TASK_UPDATE, data, { headers: headers })
+      .put(devProcess.REACT_APP_TASK_UPDATE, data, { headers: headers })
       .then(data => {
         dispatch(taskUpdateSuccess(data));
       })
@@ -168,7 +170,7 @@ export const listTasks = token => {
       authorization: token
     };
     axios
-      .get(process.env.TASK_LIST, headers)
+      .get(devProcess.REACT_APP_TASK_LIST, headers)
       .then(data => {
         dispatch(listTaskSuccess(data));
       })

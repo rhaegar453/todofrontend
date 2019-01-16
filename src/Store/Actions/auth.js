@@ -1,5 +1,7 @@
 import * as actions from "../ActionTypes/auth";
 import axios from "axios";
+import * as devProcess from '../../devConfig'; 
+
 /* #region CheckLogin */
 
 const checkLoginStart = () => {
@@ -8,14 +10,15 @@ const checkLoginStart = () => {
   };
 };
 
-const checkLoginSuccess = token => {
+const checkLoginSuccess = (token,actualToken) => {
   return {
     type: actions.check_login_success,
-    token: token
+    data: token,
+    token:actualToken
   };
 };
 
-const checkLoginFail = err => {
+export const checkLoginFail = err => {
   return {
     type: actions.check_login_fail,
     payload: "AutoLogin Failed"
@@ -28,14 +31,16 @@ export const checkLogin = token => {
     console.log("Make a call to the server to fetch the details");
     const headers = {
       "Content-Type": "application/json",
-      authorization: token
+      "authorization": token
     };
     axios
-      .post(process.env.GET_USER_DETAILS)
+      .get(devProcess.REACT_APP_GET_USER_DETAILS,{headers:headers})
       .then(data => {
-        dispatch(checkLoginSuccess());
+        console.log(data);
+        dispatch(checkLoginSuccess(data, token));
       })
       .catch(err => {
+        console.log(err);
         dispatch(checkLoginFail());
       });
   };
@@ -58,17 +63,23 @@ const loginFail = err => {
 const loginSuccess = token => {
   return {
     type: actions.login_success,
-    payload: token.token
+    token: token.data.token
   };
 };
 
 export const login = (email, password) => {
   return dispatch => {
     dispatch(loginStart());
+    let data={
+      email:email,
+      password:password
+    }
+    let headers={ "Content-Type": "application/json" } 
     axios
-      .post(process.env.LOGIN_URL)
+      .post(devProcess.REACT_APP_LOGIN_URL, data, {headers:headers})
       .then(token => {
         dispatch(loginSuccess(token));
+        localStorage.setItem('jwt', token.data.token);
       })
       .catch(err => {
         dispatch(loginFail(err));
@@ -99,7 +110,7 @@ export const register = (email, password, username) => {
   return dispatch => {
     dispatch(registerStart());
     axios
-      .post(process.env.REGISTER_URL)
+      .post(devProcess.REACT_APP_REGISTER_URL)
       .then(data => {
         if (data.success) {
           dispatch(registerSuccess("Successfully Registered"));
@@ -118,4 +129,5 @@ export const Logout=()=>{
     type:actions.logout
   }
 }
+
 

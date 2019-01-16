@@ -10,9 +10,15 @@ class Navigation extends React.Component {
     super(props);
   }
 
+  logoutHandler=()=>{
+      setTimeout(()=>{
+        this.props.logout()
+      },1000)
+  }
+
   render() {
     const authButtons = this.props.isLoggedIn ? (
-      <button className="btn btn-primary" type="button" id="authbuttons">
+      <button className="btn btn-primary" type="button" id="authbuttons" onClick={this.logoutHandler}> 
         Log Out
       </button>
     ) : (

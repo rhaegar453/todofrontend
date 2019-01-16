@@ -15,14 +15,15 @@ const authReducer = (state = initialState, action) => {
   switch (action.type) {
     //Check Login
     case actionTypes.check_login_start:
-      return updateObject(state, { loading: true });
+      return updateObject(state, { loading: true, isLoggedIn:false});
     case actionTypes.check_login_fail:
-      return updateObject(state, { loading: false });
+      return updateObject(state, { loading: false, isLoggedIn:false});
     case actionTypes.check_login_success:
       return updateObject(state, {
         loading: false,
         isLoggedIn: true,
-        token: action.token
+        token: action.token,
+        username:action.data.data.username
       });
       //Login Start
     case actionTypes.login_start:
@@ -32,7 +33,7 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         isLoggedIn: true,
         success: true,
-        username: action.payload
+        token: action.token
       });
     case actionTypes.login_fail:
       return updateObject(state,{
